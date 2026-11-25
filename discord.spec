@@ -5,7 +5,7 @@
 %global __provides_exclude_from %{_libdir}/discord/.*\\.s
 
 Name:           discord
-Version:        0.0.134
+Version:        1.0.170
 Release:        1
 Summary:        All-in-one voice and text chat for gamers
 
@@ -32,19 +32,20 @@ such as Mumble.
 %build
 
 %install
-mkdir -p %{buildroot}/%{_bindir}/
-mkdir -p %{buildroot}/%{_libdir}/discord
-mkdir -p %{buildroot}/%{_datadir}/applications
+mkdir -p %{buildroot}%{_bindir}/
+mkdir -p %{buildroot}%{_libdir}/discord
+mkdir -p %{buildroot}%{_datadir}/applications
 
 desktop-file-install                            \
 --set-icon=%{name}                              \
---set-key=Exec --set-value=%{_bindir}/Discord   \
+--set-key=Exec --set-value=%{_bindir}/discord   \
 --delete-original                               \
 --dir=%{buildroot}/%{_datadir}/applications     \
 discord.desktop
 
 cp -r * %{buildroot}/%{_libdir}/discord/
-ln -sf ../%{_lib}/discord/Discord %{buildroot}/%{_bindir}/
+ln -sf ../%{_lib}/discord/discord %{buildroot}%{_bindir}/
+install -Dm755 updater_bootstrap %{buildroot}%{_bindir}/updater_bootstrap
 install -p -D -m 644 %{name}.png \
         %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 
@@ -53,6 +54,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{name}.desktop
 
 %files
 %{_libdir}/discord/
-%{_bindir}/Discord
+%{_bindir}/discord
+%{_bindir}/updater_bootstrap
 %{_datadir}/applications/discord.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
